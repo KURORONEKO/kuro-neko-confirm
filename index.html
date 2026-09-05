@@ -128,17 +128,16 @@
         }
 
         async function sendBlynkCommand(value) {
-            // ยิงผ่าน Serverless API ของ Vercel เพื่อความปลอดภัย
             const targetUrl = `/api/blynk?pin=${V_PIN}&value=${value}`;
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 8000);
-
+        
             try {
                 const response = await fetch(targetUrl, { signal: controller.signal });
                 clearTimeout(timeoutId);
-                // ใน api/blynk.js ให้ใช้แบบ .json() ตามเดิม
+        
                 if (response.ok) {
-                  res.status(200).json({ success: true, message: `Updated ${pin} to ${value}` });
+                    return true;
                 }
                 const errData = await response.json().catch(() => ({}));
                 throw new Error(errData.error || `HTTP ${response.status}`);
