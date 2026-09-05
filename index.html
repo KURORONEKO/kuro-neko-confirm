@@ -136,9 +136,9 @@
             try {
                 const response = await fetch(targetUrl, { signal: controller.signal });
                 clearTimeout(timeoutId);
-
+                // ใน api/blynk.js ให้ใช้แบบ .json() ตามเดิม
                 if (response.ok) {
-                    return true;
+                  res.status(200).json({ success: true, message: `Updated ${pin} to ${value}` });
                 }
                 const errData = await response.json().catch(() => ({}));
                 throw new Error(errData.error || `HTTP ${response.status}`);
